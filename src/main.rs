@@ -48,11 +48,12 @@ struct HitRecord<'a> {
     t: f32,
     p: Vector3<f32>,
     normal: Vector3<f32>,
-    mat: &'a Material
+    mat: &'a dyn Material
 }
 
 impl<'a> HitRecord<'a> { // impl<'a> defines 'a .
-    fn new(mat: &'a Material) -> HitRecord<'a> {
+    #[allow(dead_code)]
+    fn new(mat: &'a dyn Material) -> HitRecord<'a> {
         HitRecord {
             t: 0.0,
             p: vec3(0.0, 0.0, 0.0),
@@ -69,11 +70,11 @@ trait Hitable {
 struct Sphere {
     center: Vector3<f32>,
     radius: f32,
-    mat: Box<Material>
+    mat: Box<dyn Material>
 }
 
 impl Sphere {
-    fn new(center: Vector3<f32>, radius: f32, mat: Box<Material>) -> Self {
+    fn new(center: Vector3<f32>, radius: f32, mat: Box<dyn Material>) -> Self {
         Sphere { center: center, radius: radius, mat: mat }
     }
 }
@@ -112,7 +113,7 @@ impl Hitable for Sphere {
 }
 
 struct HitableList {
-    hitable: Vec<Box<Hitable>>
+    hitable: Vec<Box<dyn Hitable>>
 }
 
 impl HitableList {
@@ -254,6 +255,7 @@ struct Camera {
     vertical: Vector3<f32>,
     u: Vector3<f32>,
     v: Vector3<f32>,
+    #[allow(dead_code)]
     w: Vector3<f32>,
     lens_radius: f32
 }
@@ -290,7 +292,7 @@ impl Camera {
     }
 }
 
-fn color(r: &Ray, world: &Hitable, depth: i32) -> Vector3<f32> {
+fn color(r: &Ray, world: &dyn Hitable, depth: i32) -> Vector3<f32> {
     // Peter says:
     // Some of the reflected rays hit the object they are reflecting off of
     // not at exactly t=0, but instead at t=-0.0000001 or t=0.00000001 or
