@@ -5,7 +5,7 @@ authors = ["blackspotbear <blackspotbear@users.noreply.github.com>"]
 edition = "2018"
 
 [dependencies]
-image = "0.22.3"
+image = "0.23.12"
 rand = "0.7.2"
 cgmath = "0.17.0"
 pbr = "1.0.2"
